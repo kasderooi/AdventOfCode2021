@@ -13,7 +13,6 @@ int	ft_strlen(const char *str){
 int	main( void ) {
 	std::ifstream	input;
 	std::string		line;
-	const char	*str;
 	int		value = 0;
 	int		horizontal = 0;
 	int		vertical = 0;
@@ -23,8 +22,7 @@ int	main( void ) {
 
 	if ( input.is_open() ) {
 		while ( getline( input, line ) ) {
-			str = line.c_str();
-			value = (str[ft_strlen(str) - 1] - 48);
+			value = (line[line.length() - 1] - 48);
 			if ( line.find("forward") != std::string::npos ) {
 				horizontal += value;
 				vertical += (value * aim);

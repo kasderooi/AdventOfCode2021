@@ -29,9 +29,9 @@ int check_rows( std::vector<int> shadow, int i_b ) {
 			if ( shadow[pos + i_c] )
 				check++;
 		if ( check == 5 )
-			return i_r;	
+			return 1;	
 	}
-	return (-1);
+	return 0;
 }
 
 int check_columns( std::vector<int> shadow, int i_b ) {
@@ -45,10 +45,10 @@ int check_columns( std::vector<int> shadow, int i_b ) {
 			if ( shadow[pos + (i_c * 5)] )
 				check++;
 			if ( check == 5 )
-				return i_c;	
+				return 1;	
 		}
 	}
-	return (-1);
+	return 0;
 }
 
 int do_result( std::vector<int> board, std::vector<int> shadow, int nbr ) {
@@ -61,18 +61,9 @@ int do_result( std::vector<int> board, std::vector<int> shadow, int nbr ) {
 	return ret;
 }
 
-void print_board( std::vector<int> board, int nbr ){
-	for ( int i_r = 0; i_r < 25; i_r++ ) {
-		if (i_r % 5 == 0)
-			std::cout << std::endl;
-		std::cout << board[(nbr * 25) + i_r] << " ";
-	}
-}
-
 void check_nbr( std::vector<int> draw, std::vector<int> boards, int line_count ) {
 	std::vector<int> shadow( boards.size(), 0 );
 	int				board_count = line_count / 5;
-	int				check = -1;
 
 	for ( std::vector<int>::iterator it = draw.begin(); it < draw.end(); it++ ){
 		for ( int i_b = 0; i_b < board_count; i_b++ )
@@ -80,13 +71,7 @@ void check_nbr( std::vector<int> draw, std::vector<int> boards, int line_count )
 				if ( *it == boards[(25 * i_b) + i_c])
 					shadow[(25 * i_b) + i_c] = 1;
 		for ( int i = 0; i < board_count; i++ ) {
-			check = check_rows( shadow, i );
-			if ( check >= 0 ) {
-				std::cout << do_result( boards, shadow, i ) * (*it) << std::endl;
-				return ;
-			}
-			check = check_columns( shadow, i );
-			if ( check >= 0 ) {
+			if ( check_rows( shadow, i ) || check_columns( shadow, i ) ) {
 				std::cout << do_result( boards, shadow, i ) * (*it) << std::endl;
 				return ;
 			}
@@ -105,7 +90,6 @@ int	main( void ) {
 	if ( input.is_open() ) {
 		getline( input, line );
 		split_to_int( &draw, line, ',' );
-		std::cout << std::endl;
 		while ( getline( input, line ) )
 			if ( line.length() ) {
 				line_count++;
