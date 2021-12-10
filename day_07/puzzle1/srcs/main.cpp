@@ -41,8 +41,7 @@ int	main( void ) {
 		if (buf1 <= buf2){
 			buf2 = buf1;
 			ret = itt;
-		}
-		else
+		} else
 			break ;
 	}
 	std::cout << buf2 << std::endl;

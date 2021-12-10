@@ -35,7 +35,6 @@ int	main( void ) {
 	sort( init_list.begin(), init_list.end() );
 	buf2 = INT_MAX;
 	for ( int i = 0; i < *(init_list.end() - 1); i++ ) {
-		buf1 = 0;
 		buf3 = 0;
 		for ( std::vector<int>::iterator it = init_list.begin(); it < init_list.end(); ++it ) {
 			buf1 = abs(i - (*it));

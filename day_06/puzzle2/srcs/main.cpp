@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+
 void split_to_int( std::vector<int> *init_list, std::string line, char c ) {
 	int buf = 0;
 
@@ -36,12 +37,12 @@ int	main( void ) {
 		fish[*it]++;
 	for ( int i = 0; i < 256; i++ ) {
 		buf = fish[0];
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; i++ )
 			fish[i] = fish[i + 1];
 		fish[8] = buf;
 		fish[6] += buf;
 	}
-	for (int i = 0; i < 9; i++)
+	for ( int i = 0; i < 9; i++ )
 		ret += fish[i];
 	std::cout << ret << std::endl;
 	input.close();

@@ -18,15 +18,15 @@ void split_to_int( std::vector<int> *draw, std::string line, char c ) {
 	(*draw).push_back( buf );
 }
 
-int check_rows( std::vector<int> shadow, int i_b ) {
+int check_rows( std::vector<int> shadow, int board_index ) {
 	int	check;
 	int pos;
 
-	for ( int i_r = 0; i_r < 5; i_r++ ) {
+	for ( int row_index = 0; row_index < 5; row_index++ ) {
 		check = 0;
-		pos = ( i_b * 25 ) + ( i_r * 5 );
-		for ( int i_c = 0; i_c < 5 ; i_c++ )
-			if ( shadow[pos + i_c] )
+		pos = ( board_index * 25 ) + ( row_index * 5 );
+		for ( int column_index = 0; column_index < 5 ; column_index++ )
+			if ( shadow[pos + column_index] )
 				check++;
 		if ( check == 5 )
 			return 1;	
@@ -34,15 +34,15 @@ int check_rows( std::vector<int> shadow, int i_b ) {
 	return 0;
 }
 
-int check_columns( std::vector<int> shadow, int i_b ) {
+int check_columns( std::vector<int> shadow, int board_index ) {
 	int	check;
 	int pos;
 
-	for ( int i_r = 0; i_r < 5; i_r++ ) {
+	for ( int column_index = 0; column_index < 5; column_index++ ) {
 		check = 0;
-		pos = ( i_b * 25 ) + i_r;
-		for ( int i_c = 0; i_c < 5 ; i_c++ ) {
-			if ( shadow[pos + (i_c * 5)] )
+		pos = ( board_index * 25 ) + column_index;
+		for ( int row_index = 0; row_index < 5 ; row_index++ ) {
+			if ( shadow[pos + (row_index * 5)] )
 				check++;
 			if ( check == 5 )
 				return 1;	
@@ -66,10 +66,10 @@ void check_nbr( std::vector<int> draw, std::vector<int> boards, int line_count )
 	int				board_count = line_count / 5;
 
 	for ( std::vector<int>::iterator it = draw.begin(); it < draw.end(); it++ ){
-		for ( int i_b = 0; i_b < board_count; i_b++ )
-			for ( int i_c = 0; i_c < 25; i_c++ )
-				if ( *it == boards[(25 * i_b) + i_c])
-					shadow[(25 * i_b) + i_c] = 1;
+		for ( int board_index = 0; board_index < board_count; board_index++ )
+			for ( int place_index = 0; place_index < 25; place_index++ )
+				if ( *it == boards[(25 * board_index) + place_index])
+					shadow[(25 * board_index) + place_index] = 1;
 		for ( int i = 0; i < board_count; i++ ) {
 			if ( check_rows( shadow, i ) || check_columns( shadow, i ) ) {
 				std::cout << do_result( boards, shadow, i ) * (*it) << std::endl;

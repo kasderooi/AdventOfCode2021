@@ -5,6 +5,7 @@ void	print_vec( std::vector<Coordinates *> print ) {
 		std::cout << (*it)->get_start()[0] << "," << (*it)->get_start()[1] << " -> " << (*it)->get_end()[0] << "," << (*it)->get_end()[1] << std::endl;
 	}
 }
+
 void	print_map( Map *map ) {
 	for ( int x = 0; x <= map->get_x(); x++ ) {
 		for ( int y = 0; y <= map->get_y(); y++ )

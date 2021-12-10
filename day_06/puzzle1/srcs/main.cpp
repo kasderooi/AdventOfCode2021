@@ -31,13 +31,12 @@ int	main( void ) {
 		split_to_int( &init_list, line, ',' );
 	} else
 		return (1);
-	for ( std::vector<int>::iterator it = init_list.begin(); it < init_list.end(); it++ ) {
+	for ( std::vector<int>::iterator it = init_list.begin(); it < init_list.end(); it++ )
 		fish.push_back( new Fish( *it ));
-	}
 	for (int i = 0; i < 80; i++)
-		for ( std::vector<Fish*>::iterator it = fish.begin(); it < fish.end(); it++)
+		for ( std::vector<Fish*>::iterator it = fish.begin(); it < fish.end(); it++ )
 			(*it)->new_day();
-	for ( std::vector<Fish*>::iterator it = fish.begin(); it < fish.end(); it++)
+	for ( std::vector<Fish*>::iterator it = fish.begin(); it < fish.end(); it++ )
 		ret += (*it)->count_offspring();
 	ret += fish.size();
 	std::cout << ret << std::endl;
