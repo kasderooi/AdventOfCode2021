@@ -18,7 +18,7 @@ class Map {
 	public:
 
 	Map( void ) : _x(0), _y(0), _map(NULL) {};
-	~Map( void ) {delete[] _map;};
+	~Map( void ) { delete[] _map; delete[] _key; };
 
 	void initialize_map( std::vector<std::string> init_list ) {
 		_x = init_list.size();
