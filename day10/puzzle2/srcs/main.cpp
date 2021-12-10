@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <string.h>
 #include <vector>
 #include <algorithm>
 
@@ -11,54 +12,44 @@
 < > = 25137
 */
 
+int	calculate_incorrect( char* buf, char c, int points ) {
+	if ( buf[0] == c )
+		buf[0] = 0;
+	else if ( buf[0] != 0 )
+		return points;
+	return 0;
+}
+
 int	check_line( std::string line ) {
 	int len = line.length();
 	int j = 0;
 	int ret = 0;
 	char* buf = new char[len];
 	
-	for ( int i = 0; i < len; i++ )
-		buf[i] = 0;
+	memset( buf, 0, len );
 	for ( int i = 0; i < len; i++ ) {
 		if ( line[i] == '(' || line[i] == '[' || line[i] == '{' || line[i] == '<' ) {
-			buf[j] = line[i];
-			j++;
-		} else if ( line[i] == ')' ) {
-			if ( buf[j - 1] == '(' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 3;
-				break;
-			}
-		} else if ( line[i] == ']' ) {
-			if ( buf[j - 1] == '[' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 57;
-				break;
-			}
-		} else if ( line[i] == '}' ) {
-			if ( buf[j - 1] == '{' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 1197;
-				break;
-			}
-		} else if ( line[i] == '>' ) {
-			if ( buf[j - 1] == '<' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 25137;
-				break;
+			buf[j++] = line[i];
+		} else {
+			switch ( line[i] ) {
+				case ')' : 	ret += calculate_incorrect( &buf[--j], '(', 3 );
+							break;
+				case ']' :	ret += calculate_incorrect( &buf[--j], '[', 57 );
+							break;
+				case '}' :	ret += calculate_incorrect( &buf[--j], '{', 1197 );
+							break;
+				case '>' :	ret += calculate_incorrect( &buf[--j], '<', 25137 );
+							break;
 			}
 		}
 	}
 	delete[] buf;
 	return ret;
+}
+
+void	resolve_end( char* buf, char c ) {
+	if ( buf[0] == c )
+		buf[0] = 0;
 }
 
 unsigned long	complete_line( std::string line ) {
@@ -73,33 +64,20 @@ unsigned long	complete_line( std::string line ) {
 		if ( line[i] == '(' || line[i] == '[' || line[i] == '{' || line[i] == '<' ) {
 			buf[j] = line[i];
 			j++;
-		} else if ( line[i] == ')' ) {
-			if ( buf[j - 1] == '(' ) {
-				j--;
-				buf[j] = 0;
-			}
-		} else if ( line[i] == ']' ) {
-			if ( buf[j - 1] == '[' ) {
-				j--;
-				buf[j] = 0;
-			}
-		} else if ( line[i] == '}' ) {
-			if ( buf[j - 1] == '{' ) {
-				j--;
-				buf[j] = 0;
-			}
-		} else if ( line[i] == '>' ) {
-			if ( buf[j - 1] == '<' ) {
-				j--;
-				buf[j] = 0;
+		} else {
+			switch ( line[i] ) {
+				case ')' : 	resolve_end( &buf[--j], '(' );
+							break;
+				case ']' :	resolve_end( &buf[--j], '[' );
+							break;
+				case '}' :	resolve_end( &buf[--j], '{' );
+							break;
+				case '>' :	resolve_end( &buf[--j], '<' );
+							break;
 			}
 		}
 	}
-	len = 0;
-	for (int i = 0; buf[i]; i++) {
-		len++;
-	}
-	len--;
+	len = strlen( buf );
 	for ( int i = len; i >= 0; i-- ) {
 		ret *= 5;
 		ret += buf[i] == '(' ? 1 : 0;
@@ -108,7 +86,6 @@ unsigned long	complete_line( std::string line ) {
 		ret += buf[i] == '<' ? 4 : 0;
 	}
 	delete[] buf;
-	std::cout << ret << std::endl;
 	return ret;
 }
 
@@ -124,15 +101,13 @@ int	main( void ) {
 			init_list.push_back(line);
 	} else
 		return (1);
-	for ( std::vector<std::string>::iterator it = init_list.begin(); it < init_list.end(); it++ ){
+	for ( std::vector<std::string>::iterator it = init_list.begin(); it < init_list.end(); it++ )
 		if ( check_line( *it ) ) {
 			init_list.erase( it );
 			it--;
 		}
-	}
-	for ( std::vector<std::string>::iterator it = init_list.begin(); it < init_list.end(); it++ ){
+	for ( std::vector<std::string>::iterator it = init_list.begin(); it < init_list.end(); it++ )
 		ret.push_back( complete_line( *it ) );
-	}
 	sort( ret.begin(), ret.end() );
 	std::cout << ret.at(ret.size() / 2) << std::endl;
 	input.close();

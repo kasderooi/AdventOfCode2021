@@ -10,56 +10,40 @@
 < > = 25137
 */
 
+int	calculate_incorrect( char* buf, char c, int points ) {
+	if ( buf[0] == c )
+		buf[0] = 0;
+	else if ( buf[0] != 0 )
+		return points;
+	return 0;
+}
+
 int	check_line( std::string line ) {
 	int len = line.length();
 	int j = 0;
 	int ret = 0;
 	char* buf = new char[len];
 	
-	for ( int i = 0; i < len; i++ )
-		buf[i] = 0;
+	memset( buf, 0, len );
 	for ( int i = 0; i < len; i++ ) {
 		if ( line[i] == '(' || line[i] == '[' || line[i] == '{' || line[i] == '<' ) {
-			buf[j] = line[i];
-			j++;
-		} else if ( line[i] == ')' ) {
-			if ( buf[j - 1] == '(' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 3;
-				break;
-			}
-		} else if ( line[i] == ']' ) {
-			if ( buf[j - 1] == '[' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 57;
-				break;
-			}
-		} else if ( line[i] == '}' ) {
-			if ( buf[j - 1] == '{' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 1197;
-				break;
-			}
-		} else if ( line[i] == '>' ) {
-			if ( buf[j - 1] == '<' ) {
-				j--;
-				buf[j] = 0;
-			} else if ( buf[j - 1] != 0 ) {
-				ret += 25137;
-				break;
+			buf[j++] = line[i];
+		} else {
+			switch ( line[i] ) {
+				case ')' : 	ret += calculate_incorrect( &buf[--j], '(', 3 );
+							break;
+				case ']' :	ret += calculate_incorrect( &buf[--j], '[', 57 );
+							break;
+				case '}' :	ret += calculate_incorrect( &buf[--j], '{', 1197 );
+							break;
+				case '>' :	ret += calculate_incorrect( &buf[--j], '<', 25137 );
+							break;
 			}
 		}
 	}
 	delete[] buf;
 	return ret;
 }
-
 
 int	main( void ) {
 	std::ifstream	input;
