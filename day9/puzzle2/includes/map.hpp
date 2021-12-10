@@ -37,67 +37,56 @@ class Map {
 	}
 
 	void go_right( int x, int y, int* ret ) {
-		if ( y == _y - 1 )
+		if ( ++y == _y )
 			return ;
-		if ( _map[x][y + 1] < 9) {
-			y++;
-			if (_key[x][y] == 0) {
-				*ret += 1;
-				_key[x][y] = 1;
-				go_right( x, y, ret );
-				go_up( x, y, ret );
-				go_down( x, y, ret );
-			}
+		if ( _map[x][y] < 9 && _key[x][y] == 0 ) {
+			*ret += 1;
+			_key[x][y] = 1;
+			go_right( x, y, ret );
+			go_up( x, y, ret );
+			go_down( x, y, ret );
 		}
 	}
 
 	void go_left( int x, int y, int* ret ) {
-		if ( y == 0 )
+		if ( y-- == 0 )
 			return ;
-		if ( _map[x][y - 1] < 9) {
-			y--;
-			if (_key[x][y] == 0) {
-				*ret += 1;
-				_key[x][y] = 1;
-				go_left( x, y, ret );
-				go_up( x, y, ret );
-				go_down( x, y, ret );
-			}
+		if ( _map[x][y] < 9 && _key[x][y] == 0 ) {
+			*ret += 1;
+			_key[x][y] = 1;
+			go_left( x, y, ret );
+			go_up( x, y, ret );
+			go_down( x, y, ret );
 		}
 	}
 
 	void go_up( int x, int y, int* ret ) {
-		if ( x == 0 )
+		if ( x-- == 0 )
 			return;
-		if ( _map[x - 1][y] < 9 ) {
-			x--;
-			if (_key[x][y] == 0) {
-				*ret += 1;
-				_key[x][y] = 1;
-				go_up( x, y, ret );
-				go_left( x, y, ret );
-				go_right( x, y, ret );
-			}
+		if ( _map[x][y] < 9 && _key[x][y] == 0 ) {
+			*ret += 1;
+			_key[x][y] = 1;
+			go_up( x, y, ret );
+			go_left( x, y, ret );
+			go_right( x, y, ret );
 		}
 	}
 
 	void go_down( int x, int y, int* ret ) {
-		if ( x == _x - 1)
+		if ( ++x == _x )
 			return;
-		if ( _map[x + 1][y] < 9 ) {
-			x++;
-			if (_key[x][y] == 0) {
-				*ret += 1;
-				_key[x][y] = 1;
-				go_down( x, y, ret );
-				go_left( x, y, ret );
-				go_right( x, y, ret );
-			}
+		if ( _map[x][y] < 9 && _key[x][y] == 0 ) {
+			*ret += 1;
+			_key[x][y] = 1;
+			go_down( x, y, ret );
+			go_left( x, y, ret );
+			go_right( x, y, ret );
 		}
 	}
 
 	int	check_the_basin( int x, int y ) {
 		int ret = 1;
+	
 		_key[x][y] = 1;
 		this->go_up( x, y, &ret );
 		this->go_down( x, y, &ret );
