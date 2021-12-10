@@ -20,13 +20,13 @@ void split_to_int( std::vector<int> *draw, std::string line, char c ) {
 
 int check_rows( std::vector<int> shadow, int board_index ) {
 	int	check;
-	int pos;
+	int position;
 
 	for ( int row_index = 0; row_index < 5; row_index++ ) {
 		check = 0;
-		pos = ( board_index * 25 ) + ( row_index * 5 );
+		position = ( board_index * 25 ) + ( row_index * 5 );
 		for ( int column_index = 0; column_index < 5 ; column_index++ )
-			if ( shadow[pos + column_index] )
+			if ( shadow[position + column_index] )
 				check++;
 		if ( check == 5 )
 			return 1;	
@@ -36,13 +36,13 @@ int check_rows( std::vector<int> shadow, int board_index ) {
 
 int check_columns( std::vector<int> shadow, int board_index ) {
 	int	check;
-	int pos;
+	int position;
 
 	for ( int column_index = 0; column_index < 5; column_index++ ) {
 		check = 0;
-		pos = ( board_index * 25 ) + column_index;
+		position = ( board_index * 25 ) + column_index;
 		for ( int row_index = 0; row_index < 5 ; row_index++ ) {
-			if ( shadow[pos + (row_index * 5)] )
+			if ( shadow[position + (row_index * 5)] )
 				check++;
 			if ( check == 5 )
 				return 1;	
