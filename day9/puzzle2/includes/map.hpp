@@ -96,6 +96,46 @@ class Map {
 		}
 	}
 
+	int	check_the_basin( int x, int y ) {
+		int ret = 1;
+		_key[x][y] = 1;
+		this->go_up( x, y, &ret );
+		this->go_down( x, y, &ret );
+		this->go_right( x, y, &ret );
+		this->go_left( x, y, &ret );
+		return ret;
+	}
+
+	int	check_if_low( void ) {
+		int	check;
+		int ret = 0;
+
+		for ( int x = 0; x < _x; x++ ) {
+			for ( int y = 0; y < _y; y++ ) {
+				check = 0;
+				if ( y >= _y - 1) {
+					check++;
+				} else if ( _map[x][y + 1] > _map[x][y] )
+					check++;
+				if (y <= 0) {
+					check++;
+				} else if ( _map[x][y - 1] > _map[x][y] )
+					check++;
+				if ( x >= _x - 1 ) {
+					check++;
+				} else if ( _map[x + 1][y] > _map[x][y] )
+					check++;
+				if ( x <= 0 ) {
+					check++;
+				} else if ( _map[x - 1][y] > _map[x][y] )
+					check++;
+				if ( check == 4 )
+					basin.push_back( check_the_basin( x, y ) );
+			}
+		}
+		return ret;
+	}
+
 	void print_basin( void ) {
 		int nbr1 = 0;
 		int nbr2 = 0;
@@ -112,51 +152,9 @@ class Map {
 				nbr3 = (*it);
 			}
 		}
-		std::cout << nbr1 << " " << nbr2 << " " << nbr3 << " " << nbr1 * nbr2 * nbr3 << std::endl;
+		std::cout << nbr1 * nbr2 * nbr3 << std::endl;
 	}
 
-	int	check_the_basin( int x, int y ) {
-		int ret = 1;
-		_key[x][y] = 1;
-		this->go_up( x, y, &ret );
-		this->go_down( x, y, &ret );
-		this->go_right( x, y, &ret );
-		this->go_left( x, y, &ret );
-		return ret;
-	}
-	void	check_if_low( void ) {
-		int	check;
-
-		for ( int x = 0; x < _x; x++ ) {
-			for ( int y = 0; y < _y; y++ ) {
-				check = 0;
-				if (y < _y - 1) {
-					if (_map[x][y + 1] > _map[x][y])
-						check++;
-				} else
-					check++;
-				if (y > 0) {
-					if (_map[x][y - 1] > _map[x][y])
-						check++;
-				} else
-					check++;
-				if (x < _x - 1) {
-					if (_map[x + 1][y] > _map[x][y])
-						check++;
-				} else
-					check++;
-				if (x > 0) {
-					if (_map[x - 1][y] > _map[x][y])
-						check++;
-				} else
-					check++;
-				if ( check == 4 ) {
-					basin.push_back( check_the_basin( x, y ) );
-				}
-			}
-		}
-		this->print_basin();
-	}
 };
 
 #endif
