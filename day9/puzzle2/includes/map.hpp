@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 class Map {
 
@@ -133,22 +134,8 @@ class Map {
 	}
 
 	void print_basin( void ) {
-		int nbr1 = 0;
-		int nbr2 = 0;
-		int nbr3 = 0;
-		for ( std::vector<int>::iterator it = basin.begin(); it < basin.end(); it++ ) {
-			if ( (*it) > nbr1 ){
-				nbr3 = nbr2;
-				nbr2 = nbr1;
-				nbr1 = (*it);
-			} else if ( (*it) > nbr2 ){
-				nbr3 = nbr2;
-				nbr2 = (*it);
-			} else if ( (*it) > nbr3 ){
-				nbr3 = (*it);
-			}
-		}
-		std::cout << nbr1 * nbr2 * nbr3 << std::endl;
+		sort( basin.begin(), basin.end() );
+		std::cout << *(basin.end() - 1) * *(basin.end() - 2) * *(basin.end() - 3) << std::endl;
 	}
 
 };
