@@ -15,7 +15,7 @@ class Map {
 	public:
 
 	Map( void ) : _x(0), _y(0), _map(NULL) {};
-	~Map( void ) {delete[] _map;};
+	~Map( void ) { delete[] _map; };
 
 	void initialize_map( std::vector<std::string> init_list ) {
 		_x = init_list.size();
@@ -29,6 +29,7 @@ class Map {
 			}
 		}
 	}
+
 	int	check_if_low( void ) {
 		int	check;
 		int ret = 0;
@@ -36,25 +37,21 @@ class Map {
 		for ( int x = 0; x < _x; x++ ) {
 			for ( int y = 0; y < _y; y++ ) {
 				check = 0;
-				if (y < _y - 1) {
-					if (_map[x][y + 1] > _map[x][y])
-						check++;
-				} else
+				if ( y >= _y - 1) {
 					check++;
-				if (y > 0) {
-					if (_map[x][y - 1] > _map[x][y])
-						check++;
-				} else
+				} else if ( _map[x][y + 1] > _map[x][y] )
 					check++;
-				if (x < _x - 1) {
-					if (_map[x + 1][y] > _map[x][y])
-						check++;
-				} else
+				if (y <= 0) {
 					check++;
-				if (x > 0) {
-					if (_map[x - 1][y] > _map[x][y])
-						check++;
-				} else
+				} else if ( _map[x][y - 1] > _map[x][y] )
+					check++;
+				if ( x >= _x - 1 ) {
+					check++;
+				} else if ( _map[x + 1][y] > _map[x][y] )
+					check++;
+				if ( x <= 0 ) {
+					check++;
+				} else if ( _map[x - 1][y] > _map[x][y] )
 					check++;
 				if ( check == 4 )
 					ret += _map[x][y] + 1;
@@ -62,7 +59,6 @@ class Map {
 		}
 		return ret;
 	}
-
 };
 
 #endif

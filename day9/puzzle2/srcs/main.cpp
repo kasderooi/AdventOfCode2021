@@ -17,6 +17,7 @@ int	main( void ) {
 		return (1);
 	themap.initialize_map( init_list );
 	themap.check_if_low();
+	themap.print_basin();
 	input.close();
 	return (0);
 }
