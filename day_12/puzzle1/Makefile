@@ -4,7 +4,7 @@ SRCS		=	main.cpp
 OBJDIR		=	objs
 OBJS		=	$(addprefix $(OBJDIR)/, $(SRCS:.cpp=.o))
 CC			=	clang++
-FLAGS		=	-Wall -Wextra -Werror -pedantic
+FLAGS		=	-Wall -Wextra -Werror -pedantic -g
 INCS		=	includes/
 
 all:		$(NAME)

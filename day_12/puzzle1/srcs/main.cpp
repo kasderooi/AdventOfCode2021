@@ -4,7 +4,7 @@
 #include "Path.hpp"
 
 char** split( std::string line ) {
-	char*	ret[2];
+	char**	ret = new char*[2];
 	int		i = 0;
 	int		j = 0;
 
@@ -19,41 +19,61 @@ char** split( std::string line ) {
 	j = ++i;
 	while ( line[i] )
 		i++;
-	ret[0] = new char[i - j];
+	ret[1] = new char[i - j];
 	i = 0;
 	while ( line[j] ) {
 		ret[1][i] = line[j];
 		i++;
 		j++;
 	}
+	return ret;
 }
 
-void	parse( std::vector<std::string> init_list, std::vector<Path> buf_list ) {
+int	in_list( std::vector<char*>	all, char* key ) {
+	for ( std::vector<char*>::iterator it = all.begin(); it < all.end(); it++ ) {
+		if ( !strcmp( key, *it ) ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+std::vector<char*>	parse( std::vector<std::string> init_list ) {
+	std::vector<char*>	all;
 	char	**buf;
 
-	for ( std::vector<std::string>::iterator it = init_list.begin(); init_list.end(); it++ ) {
+	for ( std::vector<std::string>::iterator it = init_list.begin(); it < init_list.end(); it++ ) {
 		buf = split( *it );
-		
+		if ( !in_list( all, buf[0] ) )
+			all.push_back(buf[0]);
+		if ( !in_list( all, buf[1] ) )
+			all.push_back(buf[1]);
 	}
+	return all;
 }
 
-void	init_list( std::vector<Path> *buf_list ) {
-	char* start = new char[6]();
-	start[0] = 's';
-	start[1] = 't';
-	start[2] = 'a';
-	start[3] = 'r';
-	start[4] = 't';
-	Path	start_elem( ENDCAP, start );
-	(*buf_list).push_back( start_elem );
+void	init_du_jour( std::vector<std::string> init_list, Path* start ) {
+	std::vector<char*> all = parse ( init_list );
+	char	**buf;
+
+	for ( std::vector<char*>::iterator it = all.begin(); it < all.end(); it++ ) {
+		if ( strcmp( "start", *it ) )
+			start->add_history( new Path( *it ) );
+	}
+	start->copy_history();
+	for ( std::vector<std::string>::iterator it = init_list.begin(); it < init_list.end(); it++ ) {
+		buf = split( *it );
+		start->add_path( buf[0], buf[1] );
+	}
+
 }
 
 int	main( void ) {
 	std::ifstream	input;
 	std::string		line;
+	std::vector<char*>	all;
 	std::vector<std::string> init_list;
-	std::vector<Path> buf_list;
-	int				buf, count = 0;
+	Path			start( (char*)"start" );
 	
 	input.open( "input.txt" );
 	if ( input.is_open() ) {
@@ -61,9 +81,8 @@ int	main( void ) {
 			init_list.push_back( line );
 	} else
 		return (1);
-	init_list( &buf_list );
-
-	std::cout << count << std::endl;
+	init_du_jour( init_list, &start );
+	//std::cout << start.find_path( &start ) << std::endl;
 	input.close();
 	return (0);
 }
