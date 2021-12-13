@@ -99,7 +99,6 @@ int	main( void ) {
 	} else
 		return 1;
 	repeat_steps_to_end();
-	std::cout << std::endl << flashes << std::endl;
 	input.close();
 	return 0;
 }
